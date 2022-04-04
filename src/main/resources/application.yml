@@ -1,0 +1,41 @@
+server:
+  port: 8000
+
+test:
+  #  hostport: httpbin.org:80
+  #  hostport: localhost:5000
+  #  uri: http://${test.hostport}
+  uri: lb://httpbin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+
+      routes:
+        - id: ludis
+          uri: lb://localhost:9000
+          order: 9000
+          predicates:
+            - Path=/echo
+        - id: default_path_to_httpbin
+          uri: ${test.uri}
+          order: 10000
+          predicates:
+            - Path=/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG
+
+#management.endpoints.web.exposure.include: '*'
