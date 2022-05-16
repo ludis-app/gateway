@@ -1,6 +1,19 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.2.9-slim
+#
+# Build stage
+#
+FROM maven:3.6.0-jdk-11-slim AS build
+COPY pom.xml /opt/
+COPY src /opt/src/
 WORKDIR /opt
-ENV PORT 8000
-EXPOSE 8000
+RUN mvn -f /opt/pom.xml clean package
 COPY target/*.jar /opt/app.jar
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /opt/target/gateway-0.0.1-SNAPSHOT.jar /usr/local/lib/gateway.jar
+ENV PORT 8000
+EXPOSE 8000
+ENTRYPOINT ["java","-jar","/usr/local/lib/gateway.jar"]

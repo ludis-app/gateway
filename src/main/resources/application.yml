@@ -10,7 +10,7 @@ test:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discovery-server:8761/eureka
 
 spring:
   application:
@@ -20,7 +20,7 @@ spring:
 
       routes:
         - id: ludis
-          uri: lb://localhost:9000
+          uri: lb://user-server:9000
           order: 9000
           predicates:
             - Path=/echo
