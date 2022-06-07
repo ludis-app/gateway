@@ -24,6 +24,11 @@ spring:
           order: 9000
           predicates:
             - Path=/echo
+        - id: auth
+          uri: lb://auth-server:8004
+          order: 8004
+          predicates:
+            - Path=/echo
         - id: default_path_to_httpbin
           uri: ${test.uri}
           order: 10000
