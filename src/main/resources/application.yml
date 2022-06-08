@@ -19,21 +19,26 @@ spring:
     gateway:
 
       routes:
-        - id: ludis
+        - id: user
           uri: lb://user-server:9000
           order: 9000
           predicates:
-            - Path=/echo
+            - Path=/users/all
+        - id: calories
+          uri: lb://calories-server:9200
+          order: 9200
+          predicates:
+            - Path=/calories/all
+        - id: steps
+          uri: lb://steps-server:9100
+          order: 9100
+          predicates:
+            - Path=/steps/all
         - id: auth
           uri: lb://auth-server:8004
           order: 8004
           predicates:
-            - Path=/echo
-        - id: default_path_to_httpbin
-          uri: ${test.uri}
-          order: 10000
-          predicates:
-            - Path=/**
+            - Path=/auth/hello
 
 logging:
   level:
