@@ -19,26 +19,22 @@ spring:
     gateway:
 
       routes:
-        - id: user
-          uri: lb://user-server:9000
-          order: 9000
+        - id: user-server
+          uri: lb://user-server
           predicates:
-            - Path=/users/all
+            - Path=/users/**
         - id: calories
-          uri: lb://calories-server:9200
-          order: 9200
+          uri: lb://calories-server
           predicates:
-            - Path=/calories/all
-        - id: steps
-          uri: lb://steps-server:9100
-          order: 9100
+            - Path=/calories/**
+        - id: steps-server
+          uri: lb://steps-server
           predicates:
-            - Path=/steps/all
-        - id: auth
-          uri: lb://auth-server:8004
-          order: 8004
+            - Path=/steps/**
+        - id: auth-server
+          uri: lb://auth-server
           predicates:
-            - Path=/auth/hello
+            - Path=/auth/**
 
 logging:
   level:
